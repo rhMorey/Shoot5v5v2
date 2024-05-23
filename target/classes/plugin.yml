@@ -1,0 +1,27 @@
+name: shoot
+version: '1.0-SNAPSHOT'
+main: org.morey.shoot.shoot.Shoot
+api-version: '1.20'
+authors: [Morey]
+commands:
+  start:
+    description: Permet de lancer le jeu
+    permission-message: "&cVous n'avez pas les permissions requises."
+    permission: shoot.admin.start
+  tcreate:
+    description: Permet de créer les équipes
+    permission-message: "&cVous n'avez pas les permissions requises."
+    permission: shoot.admin.tcreate
+  stopgame:
+    description: Réinitialise la partie
+    permission-message: "&cVous n'avez pas les permissions requises."
+    permission: shoot.admin.stopgame
+  timer:
+    description: Voir le timer
+    permission-message: "&cVous n'avez pas les permissions requises."
+    permission: shoot.base.timer
+  spawnall:
+    description: Envoie tous les joueurs au spawn
+    permission-message: "&cVous n'avez pas les permissions requises."
+    permission: shoot.admin.spawnall
+
