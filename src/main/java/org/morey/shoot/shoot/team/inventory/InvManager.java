@@ -3,14 +3,12 @@ package org.morey.shoot.shoot.team.inventory;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-public class invManager implements Listener {
+public class InvManager implements Listener {
 
     public static void redInv(Player player) {
 
@@ -19,24 +17,22 @@ public class invManager implements Listener {
         ItemStack crossbow = new ItemStack(Material.CROSSBOW);
         crossbow.addEnchantment(Enchantment.PIERCING, 2);
         ItemStack arrow = new ItemStack(Material.ARROW, 16);
-        player.getInventory().addItem(createEquipment(new ItemStack(Material.LEATHER_HELMET), Color.RED),
-                createEquipment(new ItemStack(Material.LEATHER_CHESTPLATE), Color.RED),
-                createEquipment(new ItemStack(Material.LEATHER_LEGGINGS), Color.RED),
-                createEquipment(new ItemStack(Material.LEATHER_BOOTS), Color.RED),
-                swordy, pickaxe, crossbow, arrow);
-
+        player.getInventory().addItem(swordy, pickaxe, crossbow, arrow);
+        player.getInventory().setHelmet(createEquipment(new ItemStack(Material.LEATHER_HELMET), Color.RED));
+        player.getInventory().setChestplate(createEquipment(new ItemStack(Material.LEATHER_CHESTPLATE), Color.RED));
+        player.getInventory().setLeggings(createEquipment(new ItemStack(Material.LEATHER_LEGGINGS), Color.RED));
+        player.getInventory().setBoots(createEquipment(new ItemStack(Material.LEATHER_BOOTS), Color.RED));
     }
 
     public static void blueInv(Player player) {
         ItemStack swordp = new ItemStack(Material.STONE_SWORD);
         ItemStack bow = new ItemStack(Material.BOW, 1);
         ItemStack arrow = new ItemStack(Material.ARROW, 14);
-        player.getInventory().addItem(createEquipment(new ItemStack(Material.LEATHER_HELMET), Color.BLUE),
-                createEquipment(new ItemStack(Material.LEATHER_CHESTPLATE), Color.BLUE),
-                createEquipment(new ItemStack(Material.LEATHER_LEGGINGS), Color.BLUE),
-                createEquipment(new ItemStack(Material.LEATHER_BOOTS), Color.BLUE),
-                swordp, bow, arrow);
-
+        player.getInventory().addItem(swordp, bow, arrow);
+        player.getInventory().setHelmet(createEquipment(new ItemStack(Material.LEATHER_HELMET), Color.BLUE));
+        player.getInventory().setChestplate(createEquipment(new ItemStack(Material.LEATHER_CHESTPLATE), Color.BLUE));
+        player.getInventory().setLeggings(createEquipment(new ItemStack(Material.LEATHER_LEGGINGS), Color.BLUE));
+        player.getInventory().setBoots(createEquipment(new ItemStack(Material.LEATHER_BOOTS), Color.BLUE));
     }
 
     public static ItemStack createEquipment(ItemStack leather, Color color)
@@ -45,7 +41,7 @@ public class invManager implements Listener {
         assert meta != null;
         meta.setColor(color);
         leather.setItemMeta(meta);
-        leather.addEnchantment(org.bukkit.enchantments.Enchantment.PROTECTION_ENVIRONMENTAL, 3);
+        leather.addEnchantment(Enchantment.PROTECTION, 3);
         return leather;
     }
 

@@ -1,27 +1,33 @@
-name: shoot
+name: Campsite
 version: '${project.version}'
-main: org.morey.shoot.shoot.Shoot
-api-version: '1.20'
+main: org.morey.shoot.shoot.Campsite
+api-version: '1.21'
 authors: [Morey]
 commands:
   start:
     description: Permet de lancer le jeu
     permission-message: "&cVous n'avez pas les permissions requises."
-    permission: shoot.admin.start
+    permission: campsite.admin.start
   tcreate:
     description: Permet de créer les équipes
     permission-message: "&cVous n'avez pas les permissions requises."
-    permission: shoot.admin.tcreate
+    permission: campsite.admin.tcreate
   stopgame:
     description: Réinitialise la partie
     permission-message: "&cVous n'avez pas les permissions requises."
-    permission: shoot.admin.stopgame
+    permission: campsite.admin.stopgame
   timer:
     description: Voir le timer
     permission-message: "&cVous n'avez pas les permissions requises."
-    permission: shoot.base.timer
+    permission: campsite.base.timer
   spawnall:
     description: Envoie tous les joueurs au spawn
     permission-message: "&cVous n'avez pas les permissions requises."
-    permission: shoot.admin.spawnall
+    permission: campsite.admin.spawnall
+  csteam:
+    description: Commande de team
+    permission: campsite.admin.team
+  createteam:
+    description: Commande de team
+    permission: campsite.admin.createteam
 

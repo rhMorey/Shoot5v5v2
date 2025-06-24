@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-public class placePressurePlate {
+public class PlacePressurePlate {
 
     //public static Location plate1 = new Location(Bukkit.getWorld("world"), 4893, 106, 3932);
     public static Location plate2 = new Location(Bukkit.getWorld("world"), 4946, 117, 3884);

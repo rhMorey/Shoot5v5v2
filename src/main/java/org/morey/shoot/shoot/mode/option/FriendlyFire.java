@@ -5,10 +5,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.morey.shoot.shoot.Shoot;
-import org.morey.shoot.shoot.team.team;
+import org.morey.shoot.shoot.Campsite;
+import org.morey.shoot.shoot.team.ReworkTeam;
 
-public class friendlyFire implements Listener {
+public class FriendlyFire implements Listener {
 
     @EventHandler
     public void friendlyFireMelee(EntityDamageByEntityEvent event)
@@ -17,16 +17,16 @@ public class friendlyFire implements Listener {
         {
             Player player = (Player) event.getEntity();
             Player damager = (Player) event.getDamager();
-            if(team.blue.getEntries().contains(player.getName()) && team.blue.getEntries().contains(damager.getName()))
+            if(ReworkTeam.getTeamPlayer(player).equals("bleu") && ReworkTeam.getTeamPlayer(damager).equals("bleu"))
             {
                 event.setCancelled(true);
-                Shoot.log.info(damager.getName() + " a tenté d'attaquer " + player.getName());
+                Campsite.log.info(damager.getName() + " a tenté d'attaquer " + player.getName());
                 return;
             }
-            if(team.red.getEntries().contains(player.getName()) && team.red.getEntries().contains(damager.getName()))
+            if(ReworkTeam.getTeamPlayer(player).equals("rouge") && ReworkTeam.getTeamPlayer(damager).equals("rouge"))
             {
                 event.setCancelled(true);
-                Shoot.log.info(damager.getName() + " a tenté d'attaquer " + player.getName());
+                Campsite.log.info(damager.getName() + " a tenté d'attaquer " + player.getName());
             }
         }
     }
@@ -38,11 +38,11 @@ public class friendlyFire implements Listener {
         {
             Player projectileSource = (Player) projectile.getEntity().getShooter();
             Player playerHitted = (Player) projectile.getHitEntity();
-            if (team.blue.getEntries().contains(projectileSource.getName()) && team.blue.getEntries().contains(playerHitted.getName()))
+            if (ReworkTeam.getTeamPlayer(projectileSource).equals("bleu") && ReworkTeam.getTeamPlayer(playerHitted).equals("bleu"))
             {
                 projectile.setCancelled(true);
             }
-            if (team.red.getEntries().contains(projectileSource.getName()) && team.red.getEntries().contains(playerHitted.getName()))
+            if (ReworkTeam.getTeamPlayer(projectileSource).equals("rouge") && ReworkTeam.getTeamPlayer(playerHitted).equals("rouge"))
             {
                 projectile.setCancelled(true);
             }

@@ -1,20 +1,22 @@
 package org.morey.shoot.shoot.mode;
 
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.morey.shoot.shoot.Shoot;
-import org.morey.shoot.shoot.mainEvent;
-import org.morey.shoot.shoot.mode.option.killCount;
-import org.morey.shoot.shoot.team.team;
+import org.morey.shoot.shoot.Campsite;
+import org.morey.shoot.shoot.team.ReworkTeam;
+import org.morey.shoot.shoot.team.TeamBuilder;
+import org.morey.shoot.shoot.utils.EnhanceServer;
+import org.morey.shoot.shoot.mode.option.KillCount;
 
-public class winCondition implements Listener {
+import static org.morey.shoot.shoot.Campsite.getCampsiteColor;
+
+public class WinCondition implements Listener {
 
     public static int score = 0;
     public static int reddead = 0;
@@ -27,18 +29,18 @@ public class winCondition implements Listener {
     {
         Player player = event.getPlayer();
         Location loc = new Location(Bukkit.getWorld("world"), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
-        if(!mainEvent.getWhitelist(event.getBlock().getType()) && !player.isOp())
+        if(!EnhanceServer.getBlockWhitelist(event.getBlock().getType()) && !player.isOp())
         {
             event.setCancelled(true);
         }
         else
         {
-            if(event.getBlock().getType().equals(Material.DIAMOND_BLOCK) && team.blue.getEntries().contains(player.getName()))
+            if(event.getBlock().getType().equals(Material.DIAMOND_BLOCK) && ReworkTeam.getTeamPlayer(player).equals("bleu"))
             {
-                player.sendMessage("§cVotre équipe doit défendre ce bloc, pas le casser.");
+                player.sendMessage(Campsite.prefix + getCampsiteColor + "Votre équipe doit défendre ce bloc.");
                 event.setCancelled(true);
             }
-            else if (event.getBlock().getType().equals(Material.DIAMOND_BLOCK) && team.red.getEntries().contains(player.getName()))
+            else if (event.getBlock().getType().equals(Material.DIAMOND_BLOCK) && ReworkTeam.getTeamPlayer(player).equals("rouge"))
             {
                 score++;
                 if(score == 1)
@@ -58,16 +60,16 @@ public class winCondition implements Listener {
 
     public void breakFirstDiamondBlock()
     {
-        Bukkit.broadcastMessage("§7L'équipe §cRouge §7a remporté un point en détruisant un bloc de diamant, ils gagnent §cForce 1 §7pendant 18 secondes!");
+        Bukkit.broadcastMessage(Campsite.prefix + "L'équipe Rouge a remporté un point en détruisant un bloc de diamant, ils gagnent " + getCampsiteColor + "Force 1 pendant 18 secondes§r!");
         for (Player ap : Bukkit.getOnlinePlayers())
         {
             ap.playSound(ap, Sound.ENTITY_WITHER_SPAWN, 7, 0);
-            if(team.red.getEntries().contains(ap.getName()))
+            if(ReworkTeam.getTeamPlayer(ap).equals("rouge"))
             {
-                ap.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthTimer * 20, 0));
-                ap.sendMessage("§7Cassez le deuxième bloc de diamant afin de §eremporter la partie§7.");
+                ap.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, strengthTimer * 20, 0));
+                ap.sendMessage(Campsite.prefix + "Cassez le deuxième bloc de diamant afin de " + getCampsiteColor +"remporter la partie§r.");
             }
-            if(team.blue.getEntries().contains(ap.getName()))
+            if(ReworkTeam.getTeamPlayer(ap).equals("bleu"))
             {
                 ap.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, strengthTimer * 20, 0));
             }
@@ -76,7 +78,7 @@ public class winCondition implements Listener {
 
     public static void win(String team, boolean forfait)
     {
-        mainEvent.stopgame();
+        Start.stopgame();
         if(forfait)
         {
             if(team.equalsIgnoreCase("red"))
@@ -84,12 +86,12 @@ public class winCondition implements Listener {
                 for (Player ap : Bukkit.getOnlinePlayers())
                 {
                     effectOnWin(ap);
-                    timer.endGame();
+                    Timer.endGame();
                 }
                 Bukkit.broadcastMessage(" ");
                 Bukkit.broadcastMessage(" ");
-                Bukkit.broadcastMessage("§7§lL'équipe §c§lRouge §7§la gagné la manche !");
-                Bukkit.broadcastMessage(" §7Un joueur de l'équipe bleu a déclaré forfait.");
+                Bukkit.broadcastMessage(ReworkTeam.redColor + "L'équipe Rouge a gagné la manche !");
+                Bukkit.broadcastMessage("§7Un joueur de l'équipe bleu a déclaré forfait.");
                 Bukkit.broadcastMessage(" ");
 
             }
@@ -98,12 +100,12 @@ public class winCondition implements Listener {
                 for (Player ap : Bukkit.getOnlinePlayers())
                 {
                     effectOnWin(ap);
-                    timer.endGame();
+                    Timer.endGame();
                 }
                 Bukkit.broadcastMessage(" ");
                 Bukkit.broadcastMessage(" ");
-                Bukkit.broadcastMessage("§7§lL'équipe §9§lBleu §7§la gagné la manche !");
-                Bukkit.broadcastMessage(" §7Un joueur de l'équipe bleu a déclaré forfait.");
+                Bukkit.broadcastMessage(ReworkTeam.blueColor + "L'équipe Bleu a gagné la manche !");
+                Bukkit.broadcastMessage("§7Un joueur de l'équipe rouge a déclaré forfait.");
                 Bukkit.broadcastMessage(" ");
             }
         }
@@ -114,11 +116,11 @@ public class winCondition implements Listener {
                 for (Player ap : Bukkit.getOnlinePlayers())
                 {
                     effectOnWin(ap);
-                    timer.endGame();
+                    Timer.endGame();
                 }
                 Bukkit.broadcastMessage(" ");
                 Bukkit.broadcastMessage(" ");
-                Bukkit.broadcastMessage("§7§lL'équipe §c§lRouge §7§la gagné la manche !");
+                Bukkit.broadcastMessage(ReworkTeam.redColor + "L'équipe Rouge a gagné la manche !");
                 Bukkit.broadcastMessage(" ");
                 Bukkit.broadcastMessage(" ");
 
@@ -127,11 +129,11 @@ public class winCondition implements Listener {
                 for (Player ap : Bukkit.getOnlinePlayers())
                 {
                     effectOnWin(ap);
-                    timer.endGame();
+                    Timer.endGame();
                 }
                 Bukkit.broadcastMessage(" ");
                 Bukkit.broadcastMessage(" ");
-                Bukkit.broadcastMessage("§7§lL'équipe §9§lBleu §7§la gagné la manche !");
+                Bukkit.broadcastMessage(ReworkTeam.blueColor + "L'équipe Bleu a gagné la manche !");
                 Bukkit.broadcastMessage(" ");
                 Bukkit.broadcastMessage(" ");
             }
@@ -148,34 +150,38 @@ public class winCondition implements Listener {
     }
 
     @EventHandler
-    public void onDeath(PlayerDeathEvent event) {
+    public void onDeath(EntityDamageEvent event) {
 
-        int redsize = team.red.getEntries().size();
-        int bluesize = team.blue.getEntries().size();
+        int redsize = TeamBuilder.getTeamSize("rouge");
+        int bluesize = TeamBuilder.getTeamSize("bleu");
         World w = Bukkit.getWorld("world");
-        event.setCancelled(true);
-        Player player = event.getPlayer();
-        Player killer = event.getPlayer().getKiller();
-        player.setGameMode(GameMode.SPECTATOR);
-        w.playSound(killer, Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
-        killCount.manageKillCount(event, player, killer);
+        if(event.getEntity() instanceof Player && event.getDamageSource().getCausingEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            Player killer = (Player) event.getDamageSource().getCausingEntity();
 
-        if (team.blue.getEntries().contains(player.getName()))
-        {
-            bluedead++;
-            Shoot.log.info(bluesize + " + " + bluedead);
-            if(bluesize == bluedead)
+            //KillCount.manageKillCount(event, player, killer);
+
+
+            if(event.getFinalDamage() >= player.getHealth())
             {
-                win("red", false);
-            }
-        }
-        else if (team.red.getEntries().contains(player.getName()))
-        {
-            reddead++;
-            Shoot.log.info(redsize + " + " + reddead);
-            if(redsize == reddead)
-            {
-                win("blue", false);
+                KillCount.initialize(player, killer);
+                event.setCancelled(true);
+                player.teleport(EnhanceServer.spawn);
+                player.setGameMode(GameMode.SPECTATOR);
+                if (ReworkTeam.getTeamPlayer(player).equals("bleu"))
+                {
+                    bluedead++;
+                    if (bluesize == bluedead) {
+                        win("red", false);
+                    }
+                }
+                else if (ReworkTeam.getTeamPlayer(player).equals("rouge"))
+                {
+                    reddead++;
+                    if (redsize == reddead) {
+                        win("blue", false);
+                    }
+                }
             }
         }
     }

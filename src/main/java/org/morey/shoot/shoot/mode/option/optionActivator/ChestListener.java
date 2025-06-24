@@ -8,11 +8,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.morey.shoot.shoot.item.utility.slowBall;
+import org.morey.shoot.shoot.Campsite;
+import org.morey.shoot.shoot.item.utility.SlowBall;
 
 import java.util.ArrayList;
 
-public class chestListener implements Listener {
+public class ChestListener implements Listener {
 
     @EventHandler
     public void giftOnChest(PlayerInteractEvent event)
@@ -26,8 +27,8 @@ public class chestListener implements Listener {
         {
             Player player = event.getPlayer();
             event.setCancelled(true);
-            player.getInventory().addItem(slowBall.slowBall);
-            player.sendMessage("§7Vous avez reçu §e" + slowBall.slowBall.getItemMeta().getDisplayName());
+            player.getInventory().addItem(SlowBall.slowBall);
+            player.sendMessage("§rVous avez reçu " + Campsite.getCampsiteColor + SlowBall.slowBall.getItemMeta().getDisplayName());
             player.getWorld().playSound(player, Sound.BLOCK_CHEST_OPEN, 1, 2);
             event.getClickedBlock().setType(Material.AIR);
         }

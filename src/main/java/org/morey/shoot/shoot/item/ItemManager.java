@@ -7,7 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class mainItem {
+public class ItemManager {
 
     public static ItemStack Item(Material mat, String name, String lore1) {
 

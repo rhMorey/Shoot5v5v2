@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="maven-antrun-" default="main"  >
 <target name="main">
-  <copy file="C:\Users\Utilisateur\Documents\GitHub\untitled\target/shoot.jar" todir="C:\Users\Utilisateur\Desktop\serv\plugins"/>
+  <copy file="C:\Users\Utilisateur\Documents\GitHub\Shoot5v5v2\target/shoot.jar" todir="C:\Users\Utilisateur\Desktop\server shoot\plugins"/>
 </target>
 </project>
