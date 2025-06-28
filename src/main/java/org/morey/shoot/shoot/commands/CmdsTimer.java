@@ -5,10 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.morey.shoot.shoot.Campsite;
-import org.morey.shoot.shoot.mode.Timer;
 
-import static org.morey.shoot.shoot.mode.Timer.gameTime;
-import static org.morey.shoot.shoot.mode.Timer.secondsPassed;
+import static org.morey.shoot.shoot.mode.PartyManager.gameTime;
+import static org.morey.shoot.shoot.mode.PartyManager.secondsPassed;
 
 public class CmdsTimer implements CommandExecutor {
 

@@ -11,7 +11,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.morey.shoot.shoot.Campsite;
 import org.morey.shoot.shoot.mode.option.KillCount;
-import org.morey.shoot.shoot.mode.Timer;
+import org.morey.shoot.shoot.mode.PartyManager;
 import org.morey.shoot.shoot.mode.WinCondition;
 import org.morey.shoot.shoot.team.ReworkTeam;
 import org.morey.shoot.shoot.team.TeamBuilder;
@@ -46,7 +46,7 @@ public class EnhanceServer implements Listener
         ReworkTeam.unregister(player);
 
         //PROTECTION
-        if(Timer.secondsPassed > 0 && Timer.secondsPassed < Timer.gameTime)
+        if(PartyManager.secondsPassed > 0 && PartyManager.secondsPassed < PartyManager.gameTime)
         {
             if(!player.isOp())
             {
@@ -55,12 +55,12 @@ public class EnhanceServer implements Listener
             if(ReworkTeam.getTeamPlayer(player).equals("rouge"))
             {
                 ReworkTeam.removePlayer(player.getName(), "rouge");
-                WinCondition.win("blue", true);
+                WinCondition.winGame("blue", true);
             }
             if(ReworkTeam.getTeamPlayer(player).equals("bleu"))
             {
                 ReworkTeam.removePlayer(player.getName(), "bleu");
-                WinCondition.win("red", true);
+                WinCondition.winGame("red", true);
             }
         }
         //PROTECTION

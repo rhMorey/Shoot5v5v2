@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.morey.shoot.shoot.commands.*;
 import org.morey.shoot.shoot.item.utility.SlowBall;
-import org.morey.shoot.shoot.mode.Start;
+import org.morey.shoot.shoot.mode.StartGame;
 import org.morey.shoot.shoot.mode.option.BlockWarning;
 import org.morey.shoot.shoot.mode.option.KillCount;
 import org.morey.shoot.shoot.mode.option.optionActivator.ChestListener;
@@ -73,7 +73,7 @@ public final class Campsite extends JavaPlugin {
         if(Bukkit.getScoreboardManager().getMainScoreboard().getTeam("bleu") == null && Bukkit.getScoreboardManager().getMainScoreboard().getTeam("rouge") == null)
         {
             //Il doit y avoir un truc pour pouvoir delete et recréer la team sinon, si le jeu start avec des joueurs qui sont dans la team mais déconnecter, ça fait de la merde
-            Start.stopgame();
+            StartGame.stopGame();
         }
         log.info(getCampsiteColor + "Campsite stopped!");
 

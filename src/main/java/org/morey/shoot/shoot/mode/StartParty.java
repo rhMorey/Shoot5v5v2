@@ -12,19 +12,17 @@ import org.morey.shoot.shoot.mode.option.DiamondReplaceAtStart;
 import org.morey.shoot.shoot.mode.option.PlaceChest;
 import org.morey.shoot.shoot.mode.option.PlacePressurePlate;
 import org.morey.shoot.shoot.team.ReworkTeam;
-import org.morey.shoot.shoot.team.inventory.InvManager;
 import org.morey.shoot.shoot.utils.EnhanceServer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
-public class Start {
+public class StartParty {
 
-    public static boolean isStarted;
-
-    public static void startGame()
+    public static void startParty()
     {
+        Campsite.log.info("startParty called");
         Location r1, r2, r3, r4, r5, b1, b2, b3, b4, b5;
         World w = Bukkit.getWorld("world");
         r1 = new Location(w, 4808.5, 99, 3907.5, 0, 0);
@@ -49,10 +47,10 @@ public class Start {
         Campsite.log.info("Map initialisée");
 
         // INITIALISATION DU TIMER
-        Timer.startTimer();
+        PartyManager.startTimer();
         Campsite.log.info("Timer initialisée");
 
-        Bukkit.broadcastMessage(Campsite.prefix + Campsite.getCampsiteColor + "Que la partie commence !");
+        Bukkit.broadcastMessage(Campsite.prefix + Campsite.getCampsiteColor + "La manche " + PartyManager.partyNumber + " commence !");
         for (Player allPlayers : Bukkit.getOnlinePlayers()) {
             // VERIFICATION SI LE JOUEUR EST BIEN DANS LA TEAM BLUE, SI NON, ALORS ON VERIFIE LA TEAM ROUGE JUSTE APRES.
             if (ReworkTeam.getTeamPlayer(allPlayers).equalsIgnoreCase("bleu")) {
@@ -62,9 +60,9 @@ public class Start {
 
                 Location randomLocation = getRandomUnusedLocation(blueTeamLocations, usedLocations);
                 if (randomLocation != null) {
+                    allPlayers.setGameMode(GameMode.SURVIVAL);
                     allPlayers.teleport(randomLocation);
-                    InvManager.blueInv(allPlayers);
-                    allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, (Timer.prepa * 20) - 20, 1));
+                    allPlayers.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, (PartyManager.prepa * 20) - 20, 1));
                     Campsite.log.info("Le joueur " + allPlayers.getName() + " de l'équipe bleu a été téléporté à la location { " + randomLocation + " }");
                     usedLocations.add(randomLocation);
                 }
@@ -77,8 +75,8 @@ public class Start {
 
                 Location randomLocation = getRandomUnusedLocation(redTeamLocations, usedLocations);
                 if (randomLocation != null) {
+                    allPlayers.setGameMode(GameMode.SURVIVAL);
                     allPlayers.teleport(randomLocation);
-                    InvManager.redInv(allPlayers);
                     Campsite.log.info("Le joueur " + allPlayers.getName() + " de l'équipe rouge a été téléporté à la location { " + randomLocation + " }");
                     usedLocations.add(randomLocation);
                 }
@@ -86,27 +84,23 @@ public class Start {
         }
     }
 
-    public static void stopgame()
+    // stopParty est called uniquement quand la commande a été exécutée.
+    public static void stopParty()
     {
-        Timer.secondsPassed = 0;
+        Campsite.log.info("stopParty called");
+        PartyManager.secondsPassed = 0;
         Bukkit.getScheduler().cancelTasks(Campsite.getInstance());
-        Campsite.log.info("§7Le timer a été reset.");
-        if(Timer.bossBar != null)
+        if(PartyManager.bossBar != null)
         {
-            Timer.bossBar.setVisible(false);
-            Timer.bossBar.removeAll();
-            Campsite.log.info("§7La bossbar a été reset.");
+            PartyManager.bossBar.setVisible(false);
+            PartyManager.bossBar.removeAll();
         }
-        WinCondition.score = 0;
+        WinCondition.diamondBlockBreaked = 0;
         WinCondition.reddead = 0;
         WinCondition.bluedead = 0;
 
-        for (Player player : Bukkit.getOnlinePlayers())
-        {
-            EnhanceServer.spawnTeleport(player);
-            player.getInventory().clear();
-        }
-        Campsite.log.info("§7Le score a été reset.");
+        Campsite.log.info("§7La manche " + PartyManager.partyNumber + " est terminée.");
+        startParty();
     }
 
 
@@ -134,7 +128,6 @@ public class Start {
         player.setHealth(player.getMaxHealth());
         EnhanceServer.addPlayerKillCount(player);
         player.setGameMode(GameMode.SURVIVAL);
-        player.getInventory().clear();
     }
 
 }
